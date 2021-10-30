@@ -95,7 +95,6 @@
     <br>
   </div>
 
-  {% for result in results %}
   <table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5">
       <thead class="text-white">
         <tr class="bg-teal-400 flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
@@ -109,6 +108,7 @@
       </thead>
       
       <tbody class="flex-1 sm:flex-none">
+      {% for result in results %}
         <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
           <td class="border p-3">
               {{ result.date_time.date() }} /
@@ -143,9 +143,10 @@
           </td>
 
         </tr>
+      {% endfor %}
       </tbody>
   </table>
-  {% endfor %}
+
 {% endif %}
 
 {% endblock %}

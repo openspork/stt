@@ -7,6 +7,9 @@ height: 100%;
 table {
 	display: inline-table !important;
 }
+td {
+	vertical-align: top;
+}
 
 .teleNum {
 	width: 12ch;
