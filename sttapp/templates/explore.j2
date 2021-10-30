@@ -93,10 +93,12 @@
           </td>
           <td class="border p-3">
             N/A - Transcription has not been acquired.  Run inventory.
+            <br>
+            Raw file info:
+            {{ request.path + '/' + file }}
+            <br>
           </td>
           <td class="border p-3">
-            {{ (request.path + '/' if request.path != '/' else '') + file }}
-            <br>
             <audio controls preload="none" class="audio_player mb-2">
                 <source src="{{ (request.path + '/' if request.path != '/' else '') + file }}" type="audio/wav">
                 Your browser does not support the audio element.
