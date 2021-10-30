@@ -2,16 +2,26 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/tailwind.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
     {% block head %}{% endblock %}
 </head>
 
-<body>
+<body class="bg-gray-800">
     {% block logged_in %}
     {% endblock %}
 
-    <div id="title">{% block title %}{% endblock %}</div>
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div class="container px-4 py-5 mx-auto text-left text-white">
+        <div class="text-2xl font-semibold leading-10 text-left sm:mb-2">
+            {% block title %}{% endblock %}
+        </div>
+        <div id="content" class="text-white">
+            {% block content %}{% endblock %}
+        </div>
     <div id="flashes">
         {% with messages = get_flashed_messages() %}
         {% if messages %}

@@ -1,10 +1,79 @@
 {% extends "base.j2" %}
-{% block title %}<h2>Login</h2>{% endblock %}
 
 {% block content %}
-	<form method="POST">
-		<input type="password" name="password">
-		<label for="password">Password</label>
-		<br><br>
-		<input type="submit">
+	<title>Login | HD Recordings - IT Support Guys</title>
+
+	<section class="min-h-screen flex justify-center items-center bg-gray-800">
+		<section class="px-2 py-32 md:px-0">
+			<div class="container items-center max-w-6xl px-8 mx-auto xl:px-5">
+			<div class="flex flex-wrap items-center sm:-mx-3">
+				<div class="w-full h-auto overflow-hidden rounded-md bg-indigo-100 shadow-xl sm:rounded-xl m-auto p-5">
+
+					<!-- Header -->
+					<header>
+					<a href="https://itsupportguys.com/">
+						<img class="w-20 mx-auto mb-5" src="https://itsupportguys.com/wp-content/uploads/2019/12/Logo.png" alt="IT Support Guys Logo">
+					</a>
+					<div class="text-black text-center font-semibold">
+						<p>HD Audio Recordings | Login</p>
+					</div>
+					</header>
+
+					<!-- Form -->
+					<form method="POST" class="mx-auto">
+						<div class="mb-5 mt-5">
+						<label class="mb-1 font-semibold text-black block">
+							Password
+						</label>
+						<input type="password" name="password"
+							class="border-b-2 border-blue-700 mb-1 focus:border-blue-700 focus:outline-none focus:ring w-full px-4 py-3 rounded-lg shadow text-gray-600 font-medium">
+						</div>
+
+						<!-- Submit -->
+						<button type="submit"
+						class="mb-5 inline-flex justify-center text-white capitalize transition-colors duration-200 transform bg-indigo-700 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600 w-full p-2">
+						Submit
+						</button>
+					</form>
+
+					<!-- Form Footer: Copyright & Privacy Policy -->
+					<div class="text-center text-gray-500">
+					&copy; <script>document.write(new Date().getFullYear())</script> IT Support Guys | <a
+						href="https://itsupportguys.com/privacy-policy/" target="_blank" class="underline">Privacy Policy</a>
+					</div>
+
+					<!-- Error Checking -->
+					<div id="flashes">
+						{% with messages = get_flashed_messages() %}
+						{% if messages %}
+						<ul class=flashes>
+							{% for message in messages %}
+							<div
+								class="mt-5 flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+								<div class="flex items-center justify-center w-12 bg-red-500">
+								<svg class="animate-bounce w-6 h-6 text-white fill-current" viewBox="0 0 40 40"
+									xmlns="http://www.w3.org/2000/svg">
+									<path
+									d="M20 3.36667C10.8167 3.36667 3.3667 10.8167 3.3667 20C3.3667 29.1833 10.8167 36.6333 20 36.6333C29.1834 36.6333 36.6334 29.1833 36.6334 20C36.6334 10.8167 29.1834 3.36667 20 3.36667ZM19.1334 33.3333V22.9H13.3334L21.6667 6.66667V17.1H27.25L19.1334 33.3333Z" />
+								</svg>
+								</div>
+
+								<div class="px-4 py-2 -mx-3">
+								<div class="mx-3">
+									<span class="font-semibold text-red-500 dark:text-red-400">Error</span>
+									<p class="text-sm text-gray-600 dark:text-gray-200">{{ message }}</p>
+								</div>
+								</div>
+							</div>
+							{% endfor %}
+						</ul>
+						{% endif %}
+						{% endwith %}
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
+		</section>
+	</section>
 {% endblock %}

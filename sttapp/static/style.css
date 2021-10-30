@@ -1,9 +1,11 @@
-table, th, td {
-	border: 1px solid black
+html,
+body {
+height: 100%;
 }
 
-td {
-	vertical-align:top
+@media (min-width: 640px) {
+table {
+	display: inline-table !important;
 }
 
 .teleNum {

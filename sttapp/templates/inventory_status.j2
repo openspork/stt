@@ -2,22 +2,28 @@
 {% block title %}<h2>Inventory Status</h2>{% endblock %}
 
 {% block content %}
+<title>Inventory Status | HD Recordings - IT Support Guys</title>
+
 	{% if last_inventory%}
-		<table>
-			<tr>
-				<th>Start</th>
-				<th>End</th>
-				<th>Calls Added</th>
-				<th>Calls Skipped</th>
-				<th>Calls {% if not last_inventory.end_date %}Processing{% else %}Processed{% endif %}</th>
-			</tr>
-			<tr>
-				<td>{{ last_inventory.start_date }}</td>
-				<td>{% if not last_inventory.end_date %}Running...{% else %}{{ last_inventory.end_date }}{% endif %}</td>
-				<td>{{ last_inventory.finished_paths }}</td>
-				<td>{{ last_inventory.skipped_paths }}</td>
-				<td>{{ last_inventory.total_paths }}</td>
-			<tr>
+		<table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5 align-middle">
+    		<thead class="text-white">
+				<tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+					<th class="p-3 text-left">Start Time</th>
+					<th class="p-3 text-left">End Time</th>
+					<th class="p-3 text-left">Calls Added</th>
+					<th class="p-3 text-left">Calls Skipped</th>
+					<th class="p-3 text-left">Calls {% if not last_inventory.end_date %}Processing{% else %}Processed{% endif %}</th>
+				</tr>
+			</thead>
+			<tbody class="flex-1 sm:flex-none">
+				<tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+					<td class="border p-3">{{ last_inventory.start_date }}</td>
+					<td class="border p-3">{% if not last_inventory.end_date %}Running...{% else %}{{ last_inventory.end_date }}{% endif %}</td>
+					<td class="border p-3">{{ last_inventory.finished_paths }}</td>
+					<td class="border p-3">{{ last_inventory.skipped_paths }}</td>
+					<td class="border p-3">{{ last_inventory.total_paths }}</td>
+				</tr>
+			</tbody>
 		</table>
 	{% endif %}
 {% endblock %}
