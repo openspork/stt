@@ -14,7 +14,6 @@
 <title>Explore | HD Recordings - IT Support Guys</title>
 
   {% if leaf %}
-      {% if leaf %}
       <a href="{{ request.path|parent }}" class="inline-flex overflow-hidden text-white bg-gray-900 rounded group ml-0">
         <span class="px-3.5 py-2 text-white bg-purple-500 group-hover:bg-purple-600 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -25,23 +24,22 @@
       </a>
       <br>
       <br>
-      {% endif %}
+      <table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5">
+        <thead class="text-white">
+          <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+            <th class="p-3 text-left">Date</th>
+            <th class="p-3 text-left">Time</th>
+            <th class="p-3 text-left">Init.</th>
+            <th class="p-3 text-left">Recv.</th>
+            <th class="p-3 text-left">Dir.</th>
+            <th class="p-3 text-left">Duration</th>
+            <th class="p-3 text-left">Transcription</th>
+            <th class="p-3 text-left">Audio</th>
+          </tr>
+        </thead>
+        <tbody class="flex-1 sm:flex-none">
     {% for file in files %}
       {% if metadata[request.path[1:] + "/" + file ] %}
-
-        <table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5">
-          <thead class="text-white">
-            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <th class="p-3 text-left">Date</th>
-              <th class="p-3 text-left">Time</th>
-              <th class="p-3 text-left">Init.</th>
-              <th class="p-3 text-left">Recv.</th>
-              <th class="p-3 text-left">Dir.</th>
-              <th class="p-3 text-left">Duration</th>
-              <th class="p-3 text-left">Transcription</th>
-            </tr>
-          </thead>
-          <tbody class="flex-1 sm:flex-none">
             <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
               <td class="border p-3">
                   {{ metadata[request.path[1:] + "/" + file ]["date_time"].date() }}
@@ -64,44 +62,54 @@
               <td class="border p-3">
                   {{ metadata[request.path[1:] + "/" + file ]["text"] }}
               </td>
+              <td class="border p-3">
+                <audio controls preload="none" class="audio_player mb-2">
+                    <source src="{{ (request.path + '/' if request.path != '/' else '') + file }}" type="audio/wav">
+                    Your browser does not support the audio element.
+                </audio>
+                <input type="range" class="playback_rate" min=.5 max=3 value=1 step=.1>
+                <label for="playback_rate">Global Playback Rate</label>
+              </td>
             </tr>
-          </tbody>
-        </table>
       {% else %}
-      <table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5">
-          <thead class="text-white">
-            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <th class="p-3 text-left">File</th>
-              <th class="p-3 text-left">Information</th>
-            </tr>
-          </thead>
-          <tbody class="flex-1 sm:flex-none">
-            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <td class="border p-3">
-                <a href="{{ (request.path + '/' if request.path != '/' else '') + file }}">
-                    {{ (request.path + '/' if request.path != '/' else '') + file }}
-                </a>
-              </td>
-              <td class="border p-3">
-                Metadata has not yet been gathered.
-              </td>
-            </tr>
-          </tbody>
-      </table>
-      {% endif %}
-    <br>
-    <audio controls preload="none" class="audio_player mb-2">
-        <source src="{{ (request.path + '/' if request.path != '/' else '') + file }}" type="audio/wav">
-        Your browser does not support the audio element.
-    </audio>
-    <input type="range" class="playback_rate" min=.5 max=3 value=1 step=.1>
-    <label for="playback_rate">Global Playback Rate</label>
-      {% if not loop.last %}
-      <br>
-      <br>
-      <br>
+        <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+          <td class="border p-3">
+            N/A
+          </td>
+          <td class="border p-3">
+            N/A
+          </td>
+          <td class="border p-3">
+            N/A
+          </td>
+          <td class="border p-3">
+            N/A
+          </td>
+          <td class="border p-3">
+            N/A
+          </td>
+          <td class="border p-3">
+            N/A
+          </td>
+          <td class="border p-3">
+            N/A - Transcription has not been acquired.  Run inventory.
+          </td>
+          <td class="border p-3">
+            {{ (request.path + '/' if request.path != '/' else '') + file }}
+            <br>
+            <audio controls preload="none" class="audio_player mb-2">
+                <source src="{{ (request.path + '/' if request.path != '/' else '') + file }}" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+            <input type="range" class="playback_rate" min=.5 max=3 value=1 step=.1>
+            <label for="playback_rate">Global Playback Rate</label>
+          </td>
+        </tr>
       {% endif %}
     {% endfor %}
+          </tbody>
+          </table>
+
   {% else %}
     <ul>
         {% if not request.path == "/" %}
