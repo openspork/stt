@@ -88,7 +88,7 @@
 
 {% if results %}
   <div class="text-gray-200">
-    <h3>{{ results | length }} Results:</h3>
+    <h3>{{ results | length }} Result{% if results | length > 1%}s{% endif %}</h3>
     Total duration: {{ total_duration | seconds_fmt }}
     <br>
     Average duration: {{ average_duration | seconds_fmt }}
