@@ -32,9 +32,10 @@
         <table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5">
           <thead class="text-white">
             <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <th class="p-3 text-left">Date/Time</th>
-              <th class="p-3 text-left">Initiating</th>
-              <th class="p-3 text-left">Recieving</th>
+              <th class="p-3 text-left">Date</th>
+              <th class="p-3 text-left">Time</th>
+              <th class="p-3 text-left">Init.</th>
+              <th class="p-3 text-left">Recv.</th>
               <th class="p-3 text-left">Direction</th>
               <th class="p-3 text-left">Duration</th>
               <th class="p-3 text-left">Transcription</th>
@@ -43,7 +44,9 @@
           <tbody class="flex-1 sm:flex-none">
             <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
               <td class="border p-3">
-                  {{ metadata[request.path[1:] + "/" + file ]["date_time"].date() }} / 
+                  {{ metadata[request.path[1:] + "/" + file ]["date_time"].date() }}
+              </td>
+              <td class="border p-3">
                   {{ metadata[request.path[1:] + "/" + file ]["date_time"].time() }}
               </td>
               <td class="border p-3">
@@ -53,7 +56,7 @@
                   {{ metadata[request.path[1:] + "/" + file ]["receiving"] }}
               </td>
               <td class="border p-3">
-                  {% if metadata[request.path[1:] + "/" + file ]["incoming"] %}Incoming{% else %}Outgoing{%endif%}
+                  {% if metadata[request.path[1:] + "/" + file ]["incoming"] %}In{% else %}Out{%endif%}
               </td>
               <td class="border p-3">
                   {{ metadata[request.path[1:] + "/" + file ]["duration"] | seconds_fmt }}

@@ -98,12 +98,14 @@
   <table class="w-full flex flex-row flex-no-wrap sm:shadow-lg my-5">
       <thead class="text-white">
         <tr class="bg-teal-400 flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-          <th class="p-3 text-left">Date/Time</th>
-          <th class="p-3 text-left">Initiating</th>
-          <th class="p-3 text-left">Recieving</th>
+          <th class="p-3 text-left">Date</th>
+          <th class="p-3 text-left">Time</th>
+          <th class="p-3 text-left">Init.</th>
+          <th class="p-3 text-left">Recv.</th>
           <th class="p-3 text-left">Direction</th>
           <th class="p-3 text-left">Duration</th>
           <th class="p-3 text-left">Transcription</th>
+          <th class="p-3 text-left">Audio</th>
         </tr>
       </thead>
       
@@ -111,7 +113,9 @@
       {% for result in results %}
         <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
           <td class="border p-3">
-              {{ result.date_time.date() }} /
+              {{ result.date_time.date() }}
+          </td>
+          <td class="border p-3">
               {{ result.date_time.time() }}
           </td>
           <td class="border p-3">
@@ -121,7 +125,7 @@
               {{ result.receiving }}
           </td>
           <td class="border p-3">
-              {% if result.incoming %}Incoming{% else %}Outgoing{%endif%}
+              {% if result.incoming %}In{% else %}Out{%endif%}
           </td>
           <td class="border p-3">
               {{ result.duration | seconds_fmt }}
