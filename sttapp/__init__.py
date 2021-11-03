@@ -238,11 +238,14 @@ def search():
 @app.route("/run-inventory")
 @login_required
 def run_inventory():
+    print("Manual inventory run!")
     query = db.Inventory.select().where(db.Inventory.end_date == None)
     if query.exists():
         flash("Inventory is already running!")
+        print("Inventory is already running!")
     else:
         flash("Running inventory!")
+        print("Running inventory!")
         executor.submit(inventory.run_inventory)
     return redirect(url_for("inventory_status"))
 
