@@ -49,7 +49,7 @@ def background_inventory():
             except Exception as e:
                 print(str(e))
 
-        time.sleep(60)
+        time.sleep(app.config["INVENTORY_INTERVAL"])
 
 executor.submit(background_inventory)
 
