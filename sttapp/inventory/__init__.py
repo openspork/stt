@@ -45,7 +45,7 @@ def run_inventory():
         if date_time > current_app.config["CUTOFF_DATE"]:
 
             # Check if our path has already been inventoried
-            print("checking " + str(rel_path))
+            print("Checking " + str(rel_path))
 
             query = db.Call.select().where(db.Call.path == str(rel_path))
 
@@ -84,7 +84,7 @@ def run_inventory():
             query.execute()
             inventory = inventory.refresh()
         else:
-            print("skipping due to date " + str(rel_path))
+            print("Skipping due to date " + str(rel_path))
             query = db.Inventory.update(
                 skipped_paths=inventory.skipped_paths + 1
             ).where(db.Inventory.id == inventory.id)

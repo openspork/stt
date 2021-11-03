@@ -14,7 +14,8 @@ from flask import (
     send_file,
     url_for,
 )
-#from flask_executor import Executor
+
+# from flask_executor import Executor
 from flask_login import LoginManager, login_user, logout_user, login_required
 from peewee import *
 import operator
@@ -35,6 +36,7 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
 
+
 def background_inventory():
     while True:
         print("Start background inventory check!")
@@ -51,7 +53,9 @@ def background_inventory():
 
         time.sleep(app.config["INVENTORY_INTERVAL"])
 
+
 executor.submit(background_inventory)
+
 
 @login_manager.user_loader
 def load_user(user_id):
