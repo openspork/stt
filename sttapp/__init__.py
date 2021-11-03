@@ -239,7 +239,6 @@ def run_inventory():
         flash("Inventory is already running!")
     else:
         flash("Running inventory!")
-        # inventory.dispatch_inventory()
         executor.submit(inventory.run_inventory)
     return redirect(url_for("inventory_status"))
 

@@ -1,6 +1,5 @@
 from pathlib import Path
 from datetime import datetime
-import threading
 import itertools
 import re
 from flask import current_app
@@ -94,8 +93,3 @@ def run_inventory():
 
     inventory.end_date = datetime.now()
     inventory.save()
-
-
-def dispatch_inventory():
-    inventory_thread = threading.Thread(target=run_inventory())
-    inventory_thread.start()
