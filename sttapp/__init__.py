@@ -2,6 +2,8 @@ import os
 import re
 from pathlib import Path
 import datetime
+import time
+from concurrent.futures import ThreadPoolExecutor
 from flask import (
     Flask,
     flash,
@@ -12,7 +14,7 @@ from flask import (
     send_file,
     url_for,
 )
-from flask_executor import Executor
+#from flask_executor import Executor
 from flask_login import LoginManager, login_user, logout_user, login_required
 from peewee import *
 import operator
@@ -27,12 +29,29 @@ app = Flask(__name__, instance_relative_config=True)
 
 app.config.from_pyfile("config.py")
 
-executor = Executor(app)
+executor = ThreadPoolExecutor()
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
 
+def background_inventory():
+    while True:
+        print("Start background inventory check!")
+        query = db.Inventory.select().where(db.Inventory.end_date == None)
+        if query.exists():
+            print("Already inventorying!")
+        else:
+            print("Running inventory!")
+            try:
+                with app.app_context():
+                    inventory.run_inventory()
+            except Exception as e:
+                print(str(e))
+
+        time.sleep(60)
+
+executor.submit(background_inventory)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -217,8 +236,6 @@ def search():
 def run_inventory():
     query = db.Inventory.select().where(db.Inventory.end_date == None)
     if query.exists():
-        print("already inventorying")
-        current_inventory = query.get()
         flash("Inventory is already running!")
     else:
         flash("Running inventory!")
