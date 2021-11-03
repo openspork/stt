@@ -246,7 +246,11 @@ def run_inventory():
     else:
         flash("Running inventory!")
         print("Running inventory!")
-        executor.submit(inventory.run_inventory)
+        try:
+            with app.app_context():
+                inventory.run_inventory()
+        except Exception as e:
+            print(str(e))
     return redirect(url_for("inventory_status"))
 
 
