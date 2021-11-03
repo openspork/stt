@@ -15,7 +15,7 @@ from flask import (
     url_for,
 )
 
-# from flask_executor import Executor
+from flask_executor import Executor as Flask_Executor
 from flask_login import LoginManager, login_user, logout_user, login_required
 from peewee import *
 import operator
@@ -31,6 +31,8 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile("config.py")
 
 executor = ThreadPoolExecutor()
+
+flask_executor = Flask_Executor(app)
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
@@ -49,6 +51,7 @@ def background_inventory():
                 with app.app_context():
                     inventory.run_inventory()
             except Exception as e:
+                flash(str(e))
                 print(str(e))
 
         time.sleep(app.config["INVENTORY_INTERVAL"])
@@ -247,9 +250,9 @@ def run_inventory():
         flash("Running inventory!")
         print("Running inventory!")
         try:
-            with app.app_context():
-                inventory.run_inventory()
+            flask_executor.submit(inventory.run_inventory)
         except Exception as e:
+            flash(str(e))
             print(str(e))
     return redirect(url_for("inventory_status"))
 
