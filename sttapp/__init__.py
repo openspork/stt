@@ -90,14 +90,9 @@ def timestamp_link(text):
             print("seconds " + seconds)
             print("word " + word)
 
-            # result = re.search("{([0-9]*)}(\\w+)?", pattern[0]+pattern[1])
-            # print(result)
-            # if result and len(result.groups()) > 0:
-            #     print(result.group(1))
-            #     print(result.group(2))
             text = re.sub(
                 escaped_seconds_pattern + word,
-                '<a role="button" seconds="%s" class="seconds" style="color:#85C1E9;">%s</a>' % (seconds, word),
+                '<a role="button" seconds="%s" class="seconds underline font-bold">%s</a>' % (seconds, word),
                 text,
             )
     return text

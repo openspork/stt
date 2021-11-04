@@ -8,30 +8,30 @@ $(document).ready(function() {
         //console.error(error)
     }
 
-    var last_seconds = 0
+    var last_seconds
+    var last_audio_player
 
     $(".seconds").click(function(event) {
         var seconds = $(this).attr("seconds")
         $(this).closest("tr").find(".audio_player").currentTime = seconds
-        console.log("seconds " + seconds)
         var audio_player = $(this).closest("tr").find(".audio_player")[0]
-
-        last_seconds = seconds
-        console.log("last_seconds " + last_seconds)
+        last_audio_player = audio_player
 
         // if the same seconds, pause or play
-
-
-        if (audio_player.paused) {
-            // if not the last player
+        if (seconds == last_seconds) {
+            if (audio_player.paused) {
+                // if not the last player
+                audio_player.currentTime = seconds
+                audio_player.play()
+            } else {
+                audio_player.pause()
+            }
+        } else {
+            last_audio_player.pause()
             audio_player.currentTime = seconds
             audio_player.play()
-        } else {
-            audio_player.pause()
         }
-
-
-
+        last_seconds = seconds
     });
 
     $(".playback_rate").change(function(event) {
