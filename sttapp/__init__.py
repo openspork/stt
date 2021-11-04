@@ -74,8 +74,20 @@ def seconds_fmt(seconds):
 
 @app.template_filter("timestamp_link")
 def timestamp_link(text):
-    result = re.findall('{(.*)}', text)
-    print(result)
+    print("raw text " + text)
+    patterns = re.findall('({[0-9]*})', text)
+    print(patterns)
+    print("length of patterns: " + str(len(patterns)))
+    if len(patterns) > 0:
+        print("patterns to replace!")
+        for pattern in patterns:
+            pattern = re.escape("{")
+            pattern = re.escape("}")
+            print("pattern " + pattern)
+
+            text = re.sub(pattern, "replacement", text)
+            print("fixed text" + text)
+    return text
 
 @app.template_filter("regex_capture")
 def regex_capture(text, regex):
