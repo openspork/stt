@@ -22,7 +22,7 @@ def get_stt(filename):
     transcript = ""
 
     def stop_cb(evt):
-        #print("CLOSING on {}".format(evt))
+        # print("CLOSING on {}".format(evt))
         speech_recognizer.stop_continuous_recognition()
         nonlocal done
         done = True
@@ -44,11 +44,11 @@ def get_stt(filename):
             transcript = results["DisplayText"]
         else:
             timestamp = int(int(results["Offset"]) / 10000000)
-            print( "last timestamp: %s, timestamp: %s " % (last_timestamp, timestamp))
+            print("last timestamp: %s, timestamp: %s " % (last_timestamp, timestamp))
             if last_timestamp < timestamp - 30:
                 print("Include timestamp!")
                 last_timestamp = timestamp
-                transcript = "%s {%s} %s " % (
+                transcript = "%s {%s}%s " % (
                     transcript,
                     timestamp,
                     results["DisplayText"],

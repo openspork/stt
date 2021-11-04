@@ -8,6 +8,9 @@ database = SqliteQueueDatabase("./instance/db.db")
 
 @database.func()
 def regexp(expr, s):
+    # print("raw string " + s)
+    s = re.sub("{[0-9]*}", "", s)
+    # print("replaced string " + s)
     result = re.search(expr, s, flags=re.IGNORECASE)
     return result is not None
 

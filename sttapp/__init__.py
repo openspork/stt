@@ -72,27 +72,41 @@ def parent(path):
 def seconds_fmt(seconds):
     return str(datetime.timedelta(seconds=int(seconds)))
 
+
 @app.template_filter("timestamp_link")
 def timestamp_link(text):
-    print("raw text " + text)
-    patterns = re.findall('({[0-9]*})', text)
+    patterns = re.findall("({[0-9]*})(\\w+)", text)
     print(patterns)
     print("length of patterns: " + str(len(patterns)))
     if len(patterns) > 0:
         print("patterns to replace!")
         for pattern in patterns:
-            pattern = re.escape("{")
-            pattern = re.escape("}")
-            print("pattern " + pattern)
+            seconds_pattern = pattern[0]
+            escaped_seconds_pattern = re.escape(seconds_pattern)
+            seconds = re.search("{([0-9]*)}", seconds_pattern).group(1)
+            word = pattern[1]
+            print("seconds pattern " + seconds_pattern)
+            print("escaped_seconds_pattern " + escaped_seconds_pattern)
+            print("seconds " + seconds)
+            print("word " + word)
 
-            text = re.sub(pattern, "replacement", text)
-            print("fixed text" + text)
+            # result = re.search("{([0-9]*)}(\\w+)?", pattern[0]+pattern[1])
+            # print(result)
+            # if result and len(result.groups()) > 0:
+            #     print(result.group(1))
+            #     print(result.group(2))
+            text = re.sub(
+                escaped_seconds_pattern + word,
+                '<a role="button" seconds="%s" style="color:yellow;">%s</a>' % (seconds, word),
+                text,
+            )
     return text
+
 
 @app.template_filter("regex_capture")
 def regex_capture(text, regex):
     result = re.search(regex, text, flags=re.IGNORECASE)
-    if len(result.groups()) > 0:
+    if result and len(result.groups()) > 0:
         concat = ""
         for group in result.groups():
             if concat == "":
@@ -217,36 +231,36 @@ def search():
                     db.Call.duration >= float(request.args.get(key).strip()) * 60
                 )
 
-        try:
-            if request.args["logic"] == "and":
-                filter = functools.reduce(operator.and_, clauses)
-            else:
-                filter = functools.reduce(operator.or_, clauses)
+        # try:
+        if request.args["logic"] == "and":
+            filter = functools.reduce(operator.and_, clauses)
+        else:
+            filter = functools.reduce(operator.or_, clauses)
 
-            results = db.Call.select().where(filter).order_by(db.Call.date_time.asc())
+        results = db.Call.select().where(filter).order_by(db.Call.date_time.asc())
 
-            print(results)
+        print(results)
 
-            total_duration = 0
+        total_duration = 0
 
-            if not results.exists():
-                flash("Nothing found!")
-                average_duration = 0
-            else:
-                for result in results:
-                    total_duration = total_duration + result.duration
-                average_duration = total_duration / results.count()
+        if not results.exists():
+            flash("Nothing found!")
+            average_duration = 0
+        else:
+            for result in results:
+                total_duration = total_duration + result.duration
+            average_duration = total_duration / results.count()
 
-            return render_template(
-                "search.j2",
-                results=results,
-                total_duration=total_duration,
-                average_duration=average_duration,
-                args=request.args,
-            )
-        except Exception as e:
-            flash(str(e))
-            return render_template("search.j2", args=request.args)
+        return render_template(
+            "search.j2",
+            results=results,
+            total_duration=total_duration,
+            average_duration=average_duration,
+            args=request.args,
+        )
+        # except Exception as e:
+        #     flash(str(e))
+        #     return render_template("search.j2", args=request.args)
     else:
         return render_template("search.j2", args=request.args)
 
