@@ -74,7 +74,7 @@ def seconds_fmt(seconds):
 
 @app.template_filter("timestamp_link")
 def timestamp_link(text):
-    result = re.findall('{([1-9]*)}', text)
+    result = re.findall('{(.*)}', text)
     print(result)
 
 @app.template_filter("regex_capture")
