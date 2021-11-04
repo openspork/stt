@@ -132,9 +132,9 @@
           </td>
           <td class="border p-3 text_output">
             {% if args.get("regex") %}
-              {{ result.text | regex_capture(args['text']) }}
+              {{ result.text | timestamp_link | regex_capture(args['text']) }}
             {% else %}
-              {{ result.text }}
+              {{ result.text | timestamp_link }}
             {% endif%}
           </td>
           <td class="border p-3">

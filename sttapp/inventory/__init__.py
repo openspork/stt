@@ -62,7 +62,6 @@ def run_inventory():
                 query = db.Call.select().where(db.Call.path == str(rel_path))
 
                 if not query.exists():
-
                     if re.search("^external.*$", filename):
                         incoming = True
                     else:
@@ -89,6 +88,7 @@ def run_inventory():
                         finished_paths=inventory.finished_paths + 1
                     ).where(db.Inventory.id == inventory.id)
                 else:
+                    print("Skipping due to exists " + str(rel_path))
                     query = db.Inventory.update(
                         skipped_paths=inventory.skipped_paths + 1
                     ).where(db.Inventory.id == inventory.id)
@@ -105,6 +105,8 @@ def run_inventory():
 
         except Exception as e:
             print("ERROR CAUGHT")
+            print(str(e))
+            print(abs_path)
             inventory = inventory.refresh()
             if not inventory.error:
                 print("FIRST ERROR")

@@ -38,7 +38,7 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
 
-inventory.end_incomplete_inventory()
+# inventory.end_incomplete_inventory()
 
 
 def background_inventory():
@@ -72,6 +72,10 @@ def parent(path):
 def seconds_fmt(seconds):
     return str(datetime.timedelta(seconds=int(seconds)))
 
+@app.template_filter("timestamp_link")
+def timestamp_link(text):
+    result = re.findall('{([1-9]*)}', text)
+    print(result)
 
 @app.template_filter("regex_capture")
 def regex_capture(text, regex):

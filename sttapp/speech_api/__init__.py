@@ -12,6 +12,8 @@ def get_stt(filename):
     )
 
     speech_config.set_profanity(speechsdk.ProfanityOption.Raw)
+    speech_config.request_word_level_timestamps()
+    speech_config.output_format = speechsdk.OutputFormat(1)
 
     speech_config.set_property(
         speechsdk.PropertyId.Speech_LogFilename,
@@ -20,7 +22,7 @@ def get_stt(filename):
     transcript = ""
 
     def stop_cb(evt):
-        print("CLOSING on {}".format(evt))
+        #print("CLOSING on {}".format(evt))
         speech_recognizer.stop_continuous_recognition()
         nonlocal done
         done = True
@@ -31,13 +33,29 @@ def get_stt(filename):
     )
     done = False
 
+    last_timestamp = 0
+
     def concat_result(evt):
+        # print("\n\n%s\n\n" % evt.result.json)
         results = json.loads(evt.result.json)
         nonlocal transcript
+        nonlocal last_timestamp
         if transcript == "":
             transcript = results["DisplayText"]
         else:
-            transcript = "%s %s" % (transcript, results["DisplayText"])
+            timestamp = int(int(results["Offset"]) / 10000000)
+            print( "last timestamp: %s, timestamp: %s " % (last_timestamp, timestamp))
+            if last_timestamp < timestamp - 30:
+                print("Include timestamp!")
+                last_timestamp = timestamp
+                transcript = "%s {%s} %s " % (
+                    transcript,
+                    timestamp,
+                    results["DisplayText"],
+                )
+            else:
+                print("Skip timestamp!")
+                transcript = "%s %s" % (transcript, results["DisplayText"])
 
     speech_recognizer.recognized.connect(concat_result)
     speech_recognizer.session_stopped.connect(stop_cb)
