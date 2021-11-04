@@ -189,7 +189,9 @@ def search():
                 if request.args.get("regex") == "on":
                     clauses.append(db.Call.text.regexp(request.args.get(key)))
                 else:
-                    clauses.append(db.Call.text.contains(request.args.get(key)))
+                    # Strip any regex
+                    s = re.escape(request.args.get(key))
+                    clauses.append(db.Call.text.regexp(s))
 
             if key == "date_filter" and request.args[key].strip() != "":
                 regex = re.search(
