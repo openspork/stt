@@ -13,6 +13,7 @@
 					<th class="p-3 text-left">Calls Added</th>
 					<th class="p-3 text-left">Calls Skipped</th>
 					<th class="p-3 text-left">Calls {% if not last_inventory.end_date %}Processing{% else %}Processed{% endif %}</th>
+					<th class="p-3 text-left">Error Log</th>
 				</tr>
 			</thead>
 			<tbody class="flex-1 sm:flex-none">
@@ -22,6 +23,7 @@
 					<td class="border p-3">{{ last_inventory.finished_paths }}</td>
 					<td class="border p-3">{{ last_inventory.skipped_paths }}</td>
 					<td class="border p-3">{{ last_inventory.total_paths }}</td>
+					<td class="border p-3">{{ last_inventory.error | replace("\n", "<br>") }}</td>
 				</tr>
 			</tbody>
 		</table>

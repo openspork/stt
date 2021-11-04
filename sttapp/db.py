@@ -26,13 +26,14 @@ class Inventory(Model):
     finished_paths = IntegerField()
     start_date = DateTimeField()
     end_date = DateTimeField(null=True)
+    error = CharField(null=True)
 
     class Meta:
         database = database
 
 
 class Call(Model):
-    path = CharField()
+    path = CharField(unique=True)
     incoming = BooleanField()
     initiating = IntegerField()
     receiving = IntegerField()

@@ -38,6 +38,8 @@ login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.init_app(app)
 
+inventory.end_incomplete_inventory()
+
 
 def background_inventory():
     while True:
@@ -47,13 +49,8 @@ def background_inventory():
             print("Already inventorying!")
         else:
             print("Running inventory!")
-            try:
-                with app.app_context():
-                    inventory.run_inventory()
-            except Exception as e:
-                flash(str(e))
-                print(str(e))
-
+            with app.app_context():
+                inventory.run_inventory()
         time.sleep(app.config["INVENTORY_INTERVAL"])
 
 
@@ -249,11 +246,7 @@ def run_inventory():
     else:
         flash("Running inventory!")
         print("Running inventory!")
-        try:
-            flask_executor.submit(inventory.run_inventory)
-        except Exception as e:
-            flash(str(e))
-            print(str(e))
+        flask_executor.submit(inventory.run_inventory)
     return redirect(url_for("inventory_status"))
 
 
