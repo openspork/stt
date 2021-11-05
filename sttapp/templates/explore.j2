@@ -60,7 +60,7 @@
                   {{ metadata[request.path[1:] + "/" + file ]["duration"] | seconds_fmt }}
               </td>
               <td class="border p-3">
-                  {{ metadata[request.path[1:] + "/" + file ]["text"] }}
+                  {{ metadata[request.path[1:] + "/" + file ]["text"] | timestamp_link }}
               </td>
               <td class="border p-3">
                 <audio controls preload="none" class="audio_player mb-2">
