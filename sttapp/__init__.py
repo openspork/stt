@@ -86,7 +86,7 @@ def timestamp_link(text):
             seconds = re.search("{([0-9]*)}", seconds_pattern).group(1)
             words = pattern[1]
             # if we match, just skip, too close together
-            if re.search("{([0-9]*)}", "", words):
+            if re.search("{([0-9]*)}", words):
                 break
             escaped_words = re.escape(words)
             print("seconds pattern " + seconds_pattern)
