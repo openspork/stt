@@ -11,7 +11,7 @@ from .. import speech_api
 def end_incomplete_inventory():
     query = db.Inventory.select().where(db.Inventory.end_date == None)
     if query.exists():
-        print("Ending incomplete inveentory!")
+        print("Ending incomplete inventory!")
         inventory = query.get()
         inventory.end_date = datetime.now()
         inventory.save()

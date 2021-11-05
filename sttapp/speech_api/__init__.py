@@ -45,7 +45,7 @@ def get_stt(filename):
         else:
             timestamp = int(int(results["Offset"]) / 10000000)
             print("last timestamp: %s, timestamp: %s " % (last_timestamp, timestamp))
-            if last_timestamp < timestamp - 30:
+            if last_timestamp < timestamp - current_app.config["TIMESTAMP_INTERVAL"]:
                 print("Include timestamp!")
                 last_timestamp = timestamp
                 transcript = "%s {%s}%s " % (
