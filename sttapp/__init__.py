@@ -92,7 +92,8 @@ def timestamp_link(text):
 
             text = re.sub(
                 escaped_seconds_pattern + word,
-                '<a role="button" seconds="%s" class="seconds underline font-bold">%s</a>' % (seconds, word),
+                '<a role="button" seconds="%s" class="seconds underline font-bold">%s</a>'
+                % (seconds, word),
                 text,
             )
     return text
@@ -122,7 +123,7 @@ def before_request():
 
 @app.after_request
 def after_request(response):
-    response.headers.add('Accept-Ranges', 'bytes')
+    response.headers.add("Accept-Ranges", "bytes")
     db.database.close()
     return response
 
