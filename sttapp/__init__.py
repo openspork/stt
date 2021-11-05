@@ -105,6 +105,8 @@ def regex_capture(text, regex):
     if result and len(result.groups()) > 0:
         concat = ""
         for group in result.groups():
+            # Filter out broken timestamps
+            group = re.sub({[0-9]*|[0-9]*}, group, "")
             if concat == "":
                 concat = group
             else:
