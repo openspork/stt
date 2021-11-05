@@ -15,7 +15,7 @@ $(document).ready(function() {
         var seconds = $(this).attr("seconds")
         $(this).closest("tr").find(".audio_player").currentTime = seconds
         var audio_player = $(this).closest("tr").find(".audio_player")[0]
-        last_audio_player = audio_player
+        
 
         // if the same seconds, pause or play
         if (seconds == last_seconds) {
@@ -27,11 +27,12 @@ $(document).ready(function() {
                 audio_player.pause()
             }
         } else {
-            last_audio_player.pause()
+            if (last_audio_player) { last_audio_player.pause() }
             audio_player.currentTime = seconds
             audio_player.play()
         }
         last_seconds = seconds
+        last_audio_player = audio_player
     });
 
     $(".playback_rate").change(function(event) {
