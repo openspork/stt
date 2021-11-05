@@ -182,7 +182,7 @@ def search():
         print(request.args)
         clauses = []
         for key in request.args:
-            if key == "text":
+            if key == "text" and request.args[key].strip() != "":
                 if request.args.get("regex") == "on":
                     clauses.append(db.Call.text.regexp(request.args.get(key)))
                 else:
@@ -231,12 +231,14 @@ def search():
                 )
 
         # try:
-        if request.args["logic"] == "and":
-            filter = functools.reduce(operator.and_, clauses)
+        if len(clauses) > 0:
+            if request.args["logic"] == "and":
+                filter = functools.reduce(operator.and_, clauses)
+            else:
+                filter = functools.reduce(operator.or_, clauses)
+            results = db.Call.select().where(filter).order_by(db.Call.date_time.asc())
         else:
-            filter = functools.reduce(operator.or_, clauses)
-
-        results = db.Call.select().where(filter).order_by(db.Call.date_time.asc())
+            results = db.Call.select().order_by(db.Call.date_time.asc())
 
         print(results)
 
