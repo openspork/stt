@@ -75,7 +75,7 @@ def seconds_fmt(seconds):
 
 @app.template_filter("timestamp_link")
 def timestamp_link(text):
-    patterns = re.findall("({[0-9]*})([^\\s]*\\s[^\\s]*\\s[^\\s]*)?", text)
+    patterns = re.findall("({[0-9]*})([^\\s]*)?", text)
     print(patterns)
     print("length of patterns: " + str(len(patterns)))
     if len(patterns) > 0:
@@ -86,8 +86,9 @@ def timestamp_link(text):
             seconds = re.search("{([0-9]*)}", seconds_pattern).group(1)
             words = pattern[1]
             # if we match, just skip, too close together
-            if re.search("{([0-9]*)}", words):
-                words = re.sub("{[0-9]*}", "" ,words)
+            if re.search(" {[0-9]*}", words):
+                print("words contains timestamp!")
+                words = re.sub(" {[0-9]*}", "" ,words)
             escaped_words = re.escape(words)
             print("seconds pattern " + seconds_pattern)
             print("escaped_seconds_pattern " + escaped_seconds_pattern)
