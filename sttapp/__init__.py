@@ -90,7 +90,8 @@ def timestamp_link(text):
             print("escaped_seconds_pattern " + escaped_seconds_pattern)
             print("seconds " + seconds)
             print("words " + words)
-            print("escaped_words")
+            print("escaped_words " + escaped_words)
+            print("full replacement " + escaped_seconds_pattern + escaped_words)
 
             text = re.sub(
                 escaped_seconds_pattern + escaped_words,
