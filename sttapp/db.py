@@ -1,18 +1,33 @@
 from peewee import *
-from playhouse.sqliteq import SqliteQueueDatabase
+
+# from playhouse.sqliteq import SqliteQueueDatabase
 from flask_login import UserMixin
-import re
 
-database = SqliteQueueDatabase("./instance/db.db")
+# import re
+
+from instance.config import *
+
+# database = SqliteQueueDatabase("./instance/db.db")
+database = MySQLDatabase(
+    MYSQL_DB,
+    user=MYSQL_USER,
+    password=MYSQL_PASS,
+    host=MYSQL_HOST,
+    port=MYSQL_PORT,
+)
+
+# For SQLite, adds regex support IIRC
+# @database.func()
+# def regexp(expr, s):
+#     # print("raw string " + s)
+#     s = re.sub("{[0-9]*}", "", s)
+#     # print("replaced string " + s)
+#     result = re.search(expr, s, flags=re.IGNORECASE)
+#     return result is not None
 
 
-@database.func()
-def regexp(expr, s):
-    # print("raw string " + s)
-    s = re.sub("{[0-9]*}", "", s)
-    # print("replaced string " + s)
-    result = re.search(expr, s, flags=re.IGNORECASE)
-    return result is not None
+class LongTextField(TextField):
+    field_type = "LONGTEXT"
 
 
 class BaseModel(Model):
@@ -29,18 +44,18 @@ class Inventory(Model):
     finished_paths = IntegerField()
     start_date = DateTimeField()
     end_date = DateTimeField(null=True)
-    error = CharField(null=True)
+    error = TextField(null=True)
 
     class Meta:
         database = database
 
 
 class Call(Model):
-    path = CharField(unique=True)
+    path = TextField(unique=True)
     incoming = BooleanField()
     initiating = IntegerField()
     receiving = IntegerField()
-    text = CharField()
+    text = LongTextField()
     date_time = DateTimeField()
     duration = FloatField()
     inventory = ForeignKeyField(Inventory, backref="calls")

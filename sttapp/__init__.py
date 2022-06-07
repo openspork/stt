@@ -88,7 +88,7 @@ def timestamp_link(text):
             # if we match, just skip, too close together
             if re.search(" {[0-9]*}", words):
                 print("words contains timestamp!")
-                words = re.sub(" {[0-9]*}", "" ,words)
+                words = re.sub(" {[0-9]*}", "", words)
             escaped_words = re.escape(words)
             print("seconds pattern " + seconds_pattern)
             print("escaped_seconds_pattern " + escaped_seconds_pattern)
