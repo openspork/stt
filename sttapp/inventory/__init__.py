@@ -72,9 +72,11 @@ def run_inventory():
                     initiating = str_date.group(2)
 
                     # Path has not been inventoried, call API
-                    text = speech_api.get_stt(str(abs_path))
+                    package = speech_api.get_stt(str(abs_path))
+                    text = package["text"]
+                    timestamps = package["timestamps"]
                     duration = librosa.get_duration(filename=abs_path)
-                    db.Call(
+                    call = db.Call(
                         path=rel_path,
                         text=text,
                         duration=duration,
@@ -83,7 +85,17 @@ def run_inventory():
                         initiating=initiating,
                         incoming=incoming,
                         inventory=inventory,
-                    ).save()
+                    )
+                    call.save()
+                    print("Call processed, ID: %s" % call.id)
+
+                    for timestamp in timestamps:
+                        db.TimeStamp(
+                            position=timestamp["position"],
+                            timestamp=timestamp["position"],
+                            call=call,
+                        ).save()
+
                     query = db.Inventory.update(
                         finished_paths=inventory.finished_paths + 1
                     ).where(db.Inventory.id == inventory.id)

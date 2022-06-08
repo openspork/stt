@@ -24,7 +24,7 @@ from . import speech_api
 from . import inventory
 from . import db
 
-db.database.create_tables([db.Call, db.Inventory, db.User])
+db.database.create_tables([db.Call, db.Inventory, db.User, db.TimeStamp])
 
 app = Flask(__name__, instance_relative_config=True)
 

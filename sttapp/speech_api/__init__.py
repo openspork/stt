@@ -20,6 +20,7 @@ def get_stt(filename):
         str(Path(current_app.instance_path).joinpath("log.txt")),
     )
     transcript = ""
+    timestamps = []
 
     def stop_cb(evt):
         # print("CLOSING on {}".format(evt))
@@ -46,13 +47,22 @@ def get_stt(filename):
             timestamp = int(int(results["Offset"]) / 10000000)
             print("last timestamp: %s, timestamp: %s " % (last_timestamp, timestamp))
             if last_timestamp < timestamp - 15:
-                print("Include timestamp!")
+                print(
+                    "Include timestamp!  Position: %s, Timestamp: %s"
+                    % (len(transcript), timestamp)
+                )
                 last_timestamp = timestamp
                 transcript = "%s {%s}%s " % (
                     transcript,
                     timestamp,
                     results["DisplayText"],
                 )
+                timestamp = {
+                    "position": len(transcript),
+                    "timestamp": timestamp,
+                }
+                timestamps.append(timestamp)
+
             else:
                 print("Skip timestamp!")
                 transcript = "%s %s" % (transcript, results["DisplayText"])
@@ -72,4 +82,6 @@ def get_stt(filename):
     while not done:
         time.sleep(0.5)
 
-    return transcript
+    package = {"text": transcript, "timestamps": timestamps}
+
+    return package

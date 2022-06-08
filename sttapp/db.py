@@ -51,7 +51,7 @@ class Inventory(Model):
 
 
 class Call(Model):
-    path = TextField(unique=True)
+    path = CharField(unique=True)
     incoming = BooleanField()
     initiating = IntegerField()
     receiving = IntegerField()
@@ -60,6 +60,15 @@ class Call(Model):
     duration = FloatField()
     inventory = ForeignKeyField(Inventory, backref="calls")
 
+    class Meta:
+        database = database
+
+
+class TimeStamp(Model):
+    position = IntegerField()
+    timestamp = IntegerField()
+    call = ForeignKeyField(Call, backref="timestamps")
+    
     class Meta:
         database = database
 
